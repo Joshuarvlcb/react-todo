@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 
-const AddTask = ({onAdd,editDataText,clicked}) => {
+const AddTask = ({onAdd,clicked,data}) => {
     const [text, setText] = useState('')
     const [day, setDay] = useState('')
     const [remind, setReminder] = useState(false)
@@ -9,6 +9,12 @@ const AddTask = ({onAdd,editDataText,clicked}) => {
     const [textIn, setTextIn] = useState('')
 
 
+const setData = (e)=>  {
+    e.preventDefault();
+    setText(data.text);
+    setDay(data.day);
+    setReminder(data.reminder);
+}
 
 const onSubmit = (e) => {
     e.preventDefault()
@@ -26,27 +32,18 @@ const onSubmit = (e) => {
     setDay('')
     setReminder(false)
 
+    
+
 
     onAdd({text,day,remind,id})
     setId(id + 1)
 }
-if(clicked){
-console.log('ji')
-}
-
-// const addDate = () => {
-
-//    setDay(editDataText()[1])
-    
-// }
-
-
     return (
-        <form  className = 'taskForm' onSubmit = {onSubmit}>
+        <form  className = 'taskForm' onSubmit = {clicked ? setData : onSubmit}>
             <div className="formInput">
                 <label htmlFor="text">task</label>
-                <input type="text" name = 'text' id = 'text' placeholder ='Add Task' value = {textIn}
-                onChange = {(e) => !clicked ? setText(e.target.value): clicked}
+                <input type="text" name = 'text' id = 'text' placeholder ='Add Task' value = {text}
+                onChange = {(e) => setText(e.target.value)}
                 />
             </div>
 
@@ -58,13 +55,13 @@ console.log('ji')
 
             <div className="formCheck">
                 <label htmlFor="reminder">reminder</label>
-                <input type="checkbox" name = 'reminder' id = 'text'  value = {remind}
+                <input type="checkbox" name = 'reminder' id = 'text'  checked = {remind}
                 onChange = {(e) => {setReminder(e.target.checked)}}/>
             </div>
 
-            <input type="submit" name ='submit' id = 'submit' value = 'Save Task'
+            <input type="submit" name ='submit' id = 'submit' value = {clicked ? 'Edit' : 'Save Task'}
+            style = {clicked ? {backgroundColor:'orange'} : {backgroundColor:'black'}}
             className = 'btn' 
-            
             />
 
         </form>

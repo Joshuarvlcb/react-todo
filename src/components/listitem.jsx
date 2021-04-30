@@ -1,6 +1,6 @@
 import {FaTimes} from 'react-icons/fa'
 import {GrEdit} from 'react-icons/gr'
-const Listitem = ({task,Ondelete,onToggle,edit,editData}) => {
+const Listitem = ({task,Ondelete,onToggle,pencil}) => {
     // task?.reminder
     // task.reminder ? 'remind' : ''
     return (<div onDoubleClick = {() => onToggle(task.id)} className = {`item ${task.reminder ? 'remind' : ''}` }>
@@ -11,7 +11,7 @@ const Listitem = ({task,Ondelete,onToggle,edit,editData}) => {
         </div>
         <div className = 'right'>
             <FaTimes onClick ={() => Ondelete(task.id)} style = {{color:'red',cursor :'pointer'}} />
-            <GrEdit onClick = {editData(task.id)}  onClick = {edit}    style = {{cursor:'pointer'}}/>
+            <GrEdit onClick = {pencil.bind(null,task.id)}     style = {{cursor:'pointer'}}/>
         </div>
     </div>)
 }

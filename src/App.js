@@ -2,6 +2,7 @@ import Header from './components/Header'
 import Tasks from './components/tasks'
 import React, { useState } from 'react'
 import AddTask from './components/AddTask';
+import { FaDiceThree } from 'react-icons/fa';
 
 function App() {
   const [showAddTask, setShowAddTask] = useState(false)
@@ -25,7 +26,8 @@ function App() {
         reminder:true,
     },
 ]);
-const [editClick,setEditClick] = useState(false)
+const [editClick,setEditClick] = useState(false);
+const [textState,setText] = useState('')
 const Ondelete = (id) => {
  setTasks(tasks.filter(task => {
    return task.id !== id
@@ -41,44 +43,47 @@ const toggleReminder = (id) => {
 }
   const onAdd = (task) => {
     setTasks([...tasks,task])
+
+  }
+  const removeTask = (task) => {
+    setTasks([...tasks,task])
   }
 
   const edit = () => {
-    setEditClick(editClick ? false : true)
+    setEditClick(true)
     //getting the add task component to open
-    setShowAddTask(showAddTask ? false : true)
+    setShowAddTask(true)
     //whenever i open i want to get the data from the current listItem i get
-  }
-  const editData = (id) => {
-    if(editClick){
-      let currentDataText = tasks.map((task) => {
-        return task.text
-      })
-      console.log(currentDataText[0])
-
-      return currentDataText[0]
-
-    }
     
   }
-  const clicked = () => {
-console.log(editClick)
-  }
-  const editDataText = () => {
-    if(!editClick){
-      return editData()
-    }
+  const editData = (id) => {
+      let currentDataText = tasks.find((task) => {
+        return task.id == id
+      })
+      console.log(currentDataText)
+      setText(currentDataText)
   }
 
+  const pencil = (id)=> {
+    editData(id);
+    edit();
+  }
+
+ 
+
+
+
     return <div className = "container">
-      <Header onShowAdd = {() => setShowAddTask(!showAddTask)} 
+      <Header clicked = {editClick} onShowAdd = {() =>{
+         return setShowAddTask(!showAddTask), setEditClick(false)
+      }} 
       showAdd = {showAddTask}
       />
       
-{ showAddTask ?  <AddTask clicked = {clicked} editDataText = {editDataText} onAdd = {onAdd}/> : ''}
+    { showAddTask ?  <AddTask data = {textState} clicked = {editClick}  onAdd = {onAdd}/>:  ''}
 
-      <Tasks edit = {edit} editData = {editData} tasks = {tasks} Ondelete ={Ondelete} onToggle = {toggleReminder}/>
+      <Tasks pencil = {pencil} tasks = {tasks} Ondelete ={Ondelete} onToggle = {toggleReminder}/>
     </div>
 }
-
+//whenwver 
 export default App;
